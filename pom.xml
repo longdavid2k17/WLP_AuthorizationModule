@@ -2,42 +2,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
+    <packaging>pom</packaging>
+    <modules>
+        <module>WLP_AuthorizationModule_API</module>
+		<module>WLP_AuthorizationModule_Core</module>
+	</modules>
+    <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.6.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pl.com.kantoch</groupId>
-	<artifactId>authorization-module</artifactId>
+	<artifactId>WLP_AuthorizationModule</artifactId>
 	<version>0.0.1</version>
-	<name>AuthorizationModule</name>
-	<description>AuthorizationModule</description>
+	<name>WLP_AuthorizationModule</name>
+	<description>Authorization Module for WLP project</description>
 	<properties>
 		<java.version>11</java.version>
-		<keycloak.version>19.0.1</keycloak.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jjwt.version>0.9.1</jjwt.version>
+		<swagger.version>3.0.0</swagger.version>
+		<service_discovery_api.version>0.0.1</service_discovery_api.version>
+		<wlp_tools.version>0.0.1</wlp_tools.version>
+		<wlp_auth_api.version>0.0.1</wlp_auth_api.version>
+		<springdoc.version>1.6.4</springdoc.version>
+		<maven-tool.version>3.8.5</maven-tool.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-spring-boot-starter</artifactId>
-			<version>${keycloak.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		<!-- BASIC DEPENDENCIES -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -51,23 +51,81 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+
+		<!-- SECURITY DEPENDENCIES -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.keycloak.bom</groupId>
-				<artifactId>keycloak-adapter-bom</artifactId>
-				<version>${keycloak.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+		<!-- DB DEPENDENCIES -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- TOOLS DEPENDENCIES -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-model</artifactId>
+			<version>${maven-tool.version}</version>
+		</dependency>
+
+		<!-- SWAGGER DEPENDENCIES -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
+		<!-- OWN DEPENDENCIES -->
+		<dependency>
+			<groupId>pl.com.kantoch</groupId>
+			<artifactId>WLP_ServiceDiscovery_API</artifactId>
+			<version>${service_discovery_api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>pl.com.kantoch</groupId>
+			<artifactId>WLP_Tools</artifactId>
+			<version>${wlp_tools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>pl.com.kantoch</groupId>
+			<artifactId>WLP_AuthorizationModule_API</artifactId>
+			<version>${wlp_auth_api.version}</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>
