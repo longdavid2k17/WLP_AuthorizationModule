@@ -27,8 +27,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>3.0.0</swagger.version>
 		<service_discovery_api.version>0.0.1</service_discovery_api.version>
-		<wlp_tools.version>0.0.1</wlp_tools.version>
-		<wlp_auth_api.version>0.0.1</wlp_auth_api.version>
+		<wlp_tools.version>0.0.2</wlp_tools.version>
 		<springdoc.version>1.6.4</springdoc.version>
 		<maven-tool.version>3.8.5</maven-tool.version>
 	</properties>
@@ -119,12 +118,6 @@
 			<artifactId>WLP_Tools</artifactId>
 			<version>${wlp_tools.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>pl.com.kantoch</groupId>
-			<artifactId>WLP_AuthorizationModule_API</artifactId>
-			<version>${wlp_auth_api.version}</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>

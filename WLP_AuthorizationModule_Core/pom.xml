@@ -16,6 +16,14 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <wlp_auth_api.version>0.0.1</wlp_auth_api.version>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>pl.com.kantoch</groupId>
+            <artifactId>WLP_AuthorizationModule_API</artifactId>
+            <version>${wlp_auth_api.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
