@@ -9,6 +9,7 @@
     <artifactId>WLP_AuthorizationModule_API</artifactId>
     <packaging>jar</packaging>
     <name>WLP_AuthorizationModule_API</name>
+    <version>0.0.2-FINAL</version>
 
     <properties>
         <java.version>11</java.version>

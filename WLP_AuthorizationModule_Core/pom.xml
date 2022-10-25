@@ -9,6 +9,7 @@
     <artifactId>WLP_AuthorizationModule_Core</artifactId>
     <packaging>jar</packaging>
     <name>WLP_AuthorizationModule_Core</name>
+    <version>0.0.2-FINAL</version>
 
     <properties>
         <java.version>11</java.version>
@@ -16,13 +17,19 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <wlp_auth_api.version>0.0.1</wlp_auth_api.version>
+        <wlp_auth_api.version>0.0.2-FINAL</wlp_auth_api.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>pl.com.kantoch</groupId>
             <artifactId>WLP_AuthorizationModule_API</artifactId>
             <version>${wlp_auth_api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

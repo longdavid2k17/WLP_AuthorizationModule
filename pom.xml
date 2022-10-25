@@ -15,7 +15,7 @@
 	</parent>
 	<groupId>pl.com.kantoch</groupId>
 	<artifactId>WLP_AuthorizationModule</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-FINAL</version>
 	<name>WLP_AuthorizationModule</name>
 	<description>Authorization Module for WLP project</description>
 	<properties>
@@ -26,10 +26,12 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>3.0.0</swagger.version>
-		<service_discovery_api.version>0.0.1</service_discovery_api.version>
-		<wlp_tools.version>0.0.2</wlp_tools.version>
+		<service_discovery_api.version>0.0.2-FINAL</service_discovery_api.version>
+		<wlp_tools.version>0.0.2-FINAL</wlp_tools.version>
 		<springdoc.version>1.6.4</springdoc.version>
 		<maven-tool.version>3.8.5</maven-tool.version>
+		<junit.version>4.13.2</junit.version>
+		<rest-assured.version>5.2.0</rest-assured.version>
 	</properties>
 
 	<dependencies>
@@ -93,6 +95,20 @@
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-model</artifactId>
 			<version>${maven-tool.version}</version>
+		</dependency>
+
+		<!-- TEST DEPENDENCIES -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>${rest-assured.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- SWAGGER DEPENDENCIES -->
