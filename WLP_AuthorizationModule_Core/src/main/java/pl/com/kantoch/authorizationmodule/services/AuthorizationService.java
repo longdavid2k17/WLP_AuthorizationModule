@@ -18,10 +18,15 @@ import pl.com.kantoch.authorizationmodule.configuration.security_entities.role.R
 import pl.com.kantoch.authorizationmodule.configuration.security_entities.user.User;
 import pl.com.kantoch.authorizationmodule.configuration.security_entities.user.UserRepository;
 import pl.com.kantoch.authorizationmodule.configuration.user_details.UserDetailsImpl;
+import pl.com.kantoch.authorizationmodule.exceptions.NoRequiredRoleException;
+import pl.com.kantoch.authorizationmodule.exceptions.NoSuchRoleException;
+import pl.com.kantoch.authorizationmodule.exceptions.NoSuchUserException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,15 +40,17 @@ public class AuthorizationService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final PrivilegesService privilegesService;
 
     public AuthorizationService(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserRepository userRepository,
-                                RoleRepository roleRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
+                                RoleRepository roleRepository, PasswordEncoder passwordEncoder, TokenService tokenService, PrivilegesService privilegesService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
+        this.privilegesService = privilegesService;
     }
 
     public UserResponse authenticateUser(LoginRequest loginRequest) throws AuthenticationException {
@@ -113,5 +120,21 @@ public class AuthorizationService {
     public void confirmRegistration(String token) throws Exception {
         boolean result = tokenService.validateVerificationToken(token);
         if(!result) throw new IllegalStateException("Could not complete registration! Try again!");
+    }
+
+    @Transactional
+    public void grantRole(String targetUsername, ERole role, HttpServletRequest httpServletRequest) throws NoSuchUserException, NoSuchRoleException, NoRequiredRoleException {
+        String token = jwtUtil.getToken(httpServletRequest);
+        String username = jwtUtil.getUsernameFromJwtToken(httpServletRequest);
+        if(!privilegesService.hasRequiredPrivileges(token,ERole.ROLE_ADMIN)) throw new NoRequiredRoleException(username,ERole.ROLE_ADMIN);
+        Optional<User> optionalTargetUser = userRepository.findByUsername(targetUsername);
+        if(optionalTargetUser.isEmpty()) throw new NoSuchUserException(targetUsername);
+        User targetUser = optionalTargetUser.get();
+        Optional<Role> optionalTargetRole = roleRepository.findByRoleName(role);
+        if(optionalTargetRole.isEmpty()) throw new NoSuchRoleException(role);
+        if(!targetUser.getRoles().contains(optionalTargetRole.get())){
+            targetUser.getRoles().add(optionalTargetRole.get());
+            userRepository.save(targetUser);
+        }
     }
 }

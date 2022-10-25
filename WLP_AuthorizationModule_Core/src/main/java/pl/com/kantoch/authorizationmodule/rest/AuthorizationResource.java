@@ -9,6 +9,7 @@ import pl.com.kantoch.authorizationmodule.configuration.payload.requests.LoginRe
 import pl.com.kantoch.authorizationmodule.configuration.payload.requests.SetNewPasswordRequest;
 import pl.com.kantoch.authorizationmodule.configuration.payload.requests.SignUpRequest;
 import pl.com.kantoch.authorizationmodule.configuration.payload.response.UserResponse;
+import pl.com.kantoch.authorizationmodule.configuration.security_entities.role.ERole;
 import pl.com.kantoch.authorizationmodule.configuration.security_entities.user.User;
 import pl.com.kantoch.authorizationmodule.entities.events.OnRegistrationCompleteEvent;
 import pl.com.kantoch.authorizationmodule.services.AuthorizationService;
@@ -65,6 +66,12 @@ public class AuthorizationResource {
     @ApiOperation(value = "Registration token verification", notes = "Confirms user account and activates it, if only token is correct")
     public void confirmRegistration(@NotEmpty @RequestParam String token) throws Exception {
         authorizationService.confirmRegistration(token);
+    }
+
+    @PostMapping("/grant-role")
+    @ApiOperation(value = "Registration token verification", notes = "Confirms user account and activates it, if only token is correct")
+    public void grantRole(@NotEmpty @RequestParam String targetUsername, @NotEmpty @RequestParam ERole role, HttpServletRequest request) throws Exception {
+        authorizationService.grantRole(targetUsername,role,request);
     }
 
     @PreAuthorize("isAuthenticated()")
