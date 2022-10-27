@@ -11,7 +11,7 @@ public class JWTTokenService {
     public String getToken(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (StringUtils.hasText(headerAuth)) {
-            return getToken(request.getHeader(headerAuth));
+            return getToken(headerAuth);
         }
         return null;
     }
