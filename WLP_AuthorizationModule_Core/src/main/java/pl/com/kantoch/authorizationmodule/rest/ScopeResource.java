@@ -3,7 +3,6 @@ package pl.com.kantoch.authorizationmodule.rest;
 import org.springframework.web.bind.annotation.*;
 import pl.com.kantoch.authorizationmodule.configuration.security_entities.Permission;
 import pl.com.kantoch.authorizationmodule.configuration.security_entities.Scope;
-import pl.com.kantoch.authorizationmodule.configuration.security_entities.user.User;
 import pl.com.kantoch.authorizationmodule.exceptions.*;
 import pl.com.kantoch.authorizationmodule.services.ScopeService;
 import pl.com.kantoch.payload.request.DirectiveRequest;
@@ -13,6 +12,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/authentication/scopes")
+@CrossOrigin("*")
 public class ScopeResource {
     private final ScopeService scopeService;
 
@@ -36,12 +36,12 @@ public class ScopeResource {
     }
 
     @GetMapping("/name/{name}/permissions")
-    public Collection<Permission> getAllPermissionsGrantedToScope(@PathVariable String name) throws NoSuchPermissionException, NoSuchScopeException {
+    public Collection<Permission> getAllPermissionsGrantedToScope(@PathVariable String name) throws NoSuchScopeException {
         return scopeService.getAllPermissionsGrantedToScope(name);
     }
 
     @GetMapping("/id/{id}/permissions")
-    public Collection<Permission> getAllPermissionsGrantedToScope(@PathVariable Long id) throws NoSuchPermissionException, NoSuchScopeException {
+    public Collection<Permission> getAllPermissionsGrantedToScope(@PathVariable Long id) throws NoSuchScopeException {
         return scopeService.getAllPermissionsGrantedToScope(id);
     }
 
@@ -56,12 +56,12 @@ public class ScopeResource {
     }
 
     @PutMapping("/enable")
-    public Scope enableScope(@RequestParam Long scopeId, HttpServletRequest httpServletRequest) throws NoSuchRoleException, NoRequiredRoleException, NoSuchUserException, NoSuchPermissionException, NoSuchScopeException {
+    public Scope enableScope(@RequestParam Long scopeId, HttpServletRequest httpServletRequest) throws NoSuchRoleException, NoRequiredRoleException, NoSuchUserException, NoSuchScopeException {
         return scopeService.enableScope(scopeId,httpServletRequest);
     }
 
     @PutMapping("/disable")
-    public Scope disableScope(@RequestParam Long scopeId, HttpServletRequest httpServletRequest) throws NoSuchRoleException, NoRequiredRoleException, NoSuchUserException, NoSuchPermissionException, NoSuchScopeException {
+    public Scope disableScope(@RequestParam Long scopeId, HttpServletRequest httpServletRequest) throws NoSuchRoleException, NoRequiredRoleException, NoSuchUserException, NoSuchScopeException {
         return scopeService.disableScope(scopeId,httpServletRequest);
     }
 

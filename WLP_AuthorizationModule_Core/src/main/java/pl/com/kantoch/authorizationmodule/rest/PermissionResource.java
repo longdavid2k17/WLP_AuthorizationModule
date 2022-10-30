@@ -16,6 +16,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/authentication/permissions")
+@CrossOrigin("*")
 public class PermissionResource {
     private final PermissionService permissionService;
 

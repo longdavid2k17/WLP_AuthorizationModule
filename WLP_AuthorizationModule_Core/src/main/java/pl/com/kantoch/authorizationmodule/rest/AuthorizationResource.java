@@ -3,7 +3,6 @@ package pl.com.kantoch.authorizationmodule.rest;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.com.kantoch.authorizationmodule.configuration.payload.requests.LoginRequest;
 import pl.com.kantoch.authorizationmodule.configuration.payload.requests.SetNewPasswordRequest;
@@ -22,6 +21,7 @@ import javax.validation.constraints.NotEmpty;
 
 @RestController
 @RequestMapping("/authorization")
+@CrossOrigin("*")
 public class AuthorizationResource {
 
     private final AuthorizationService authorizationService;
@@ -74,11 +74,9 @@ public class AuthorizationResource {
         authorizationService.grantRole(targetUsername,role,request);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PutMapping(value = "/log-out")
     @ApiOperation(value = "Logs out user")
-    @RequestMapping(value = "/logout", method = RequestMethod.PUT)
-    public String logout(HttpServletRequest httpServletRequest) throws ServletException {
+    public void logout(HttpServletRequest httpServletRequest) throws ServletException {
         httpServletRequest.logout();
-        return "redirect: http://localhost:8081";
     }
 }

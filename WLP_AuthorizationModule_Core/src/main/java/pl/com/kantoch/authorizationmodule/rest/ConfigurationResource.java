@@ -1,10 +1,7 @@
 package pl.com.kantoch.authorizationmodule.rest;
 
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.com.kantoch.authorizationmodule.configuration.module_registrator.ModuleRegistrationService;
 
 import java.util.Map;
@@ -12,6 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/configuration")
+@CrossOrigin("*")
 public class ConfigurationResource {
 
     private final ModuleRegistrationService moduleRegistrationService;
