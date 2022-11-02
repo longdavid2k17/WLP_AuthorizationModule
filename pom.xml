@@ -26,7 +26,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>3.0.0</swagger.version>
-		<service_discovery_api.version>0.0.2-FINAL</service_discovery_api.version>
 		<springdoc.version>1.6.4</springdoc.version>
 		<maven-tool.version>3.8.5</maven-tool.version>
 		<junit.version>4.13.2</junit.version>
@@ -123,11 +122,7 @@
 		</dependency>
 
 		<!-- OWN DEPENDENCIES -->
-		<dependency>
-			<groupId>pl.com.kantoch</groupId>
-			<artifactId>WLP_ServiceDiscovery_API</artifactId>
-			<version>${service_discovery_api.version}</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -19,6 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <wlp_auth_api.version>0.0.2-FINAL</wlp_auth_api.version>
         <wlp_tools.version>0.0.2-FINAL</wlp_tools.version>
+        <service_discovery_api.version>0.0.2-FINAL</service_discovery_api.version>
     </properties>
 
     <dependencies>
@@ -36,6 +37,11 @@
             <groupId>pl.com.kantoch</groupId>
             <artifactId>WLP_Tools</artifactId>
             <version>${wlp_tools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.com.kantoch</groupId>
+            <artifactId>WLP_ServiceDiscovery_API</artifactId>
+            <version>${service_discovery_api.version}</version>
         </dependency>
     </dependencies>
 
