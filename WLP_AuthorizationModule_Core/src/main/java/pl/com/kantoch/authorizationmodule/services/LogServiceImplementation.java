@@ -37,7 +37,7 @@ public class LogServiceImplementation implements LogService {
     }
 
     @Override
-    public LogFileContentResponse readLogFile(String fileName) {
+    public LogFileContentResponse readLogFile(String moduleName, String fileName) throws IOException, InterruptedException {
         LOGGER.warn("Requesting read log file ({}) for Authorization Module",fileName);
         try {
             if(fileName.contains(".gz")) return new LogFileContentResponse(fileOperationService.readArchivedFile(fileName));

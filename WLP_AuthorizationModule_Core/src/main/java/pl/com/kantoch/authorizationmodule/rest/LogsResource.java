@@ -4,6 +4,7 @@ import logs.LogService;
 import org.springframework.web.bind.annotation.*;
 import response.LogFileContentResponse;
 
+import java.io.IOException;
 import java.util.Collection;
 
 @RestController
@@ -18,12 +19,12 @@ public class LogsResource {
     }
 
     @GetMapping("/get-all")
-    public Collection<String> listLogFiles(@RequestParam String moduleName){
+    public Collection<String> listLogFiles(@RequestParam String moduleName) throws IOException, InterruptedException {
         return logService.listLogFiles(moduleName);
     }
 
     @GetMapping("/read-file")
-    public LogFileContentResponse readLogFile(@RequestParam String fileName){
-        return logService.readLogFile(fileName);
+    public LogFileContentResponse readLogFile(@RequestParam String moduleName,@RequestParam String fileName) throws IOException, InterruptedException {
+        return logService.readLogFile(moduleName,fileName);
     }
 }
