@@ -45,19 +45,29 @@ public class JWTUtil implements Serializable
 
     public String getUsernameFromJwtToken(String token)
     {
-        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser()
+                .setSigningKey(JWT_SECRET)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public String getUsernameFromJwtToken(HttpServletRequest request)
     {
-        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(getToken(request)).getBody().getSubject();
+        return Jwts.parser()
+                .setSigningKey(JWT_SECRET)
+                .parseClaimsJws(getToken(request))
+                .getBody()
+                .getSubject();
     }
 
     public boolean validateJwtToken(String authToken)
     {
         try
         {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
+            Jwts.parser()
+                    .setSigningKey(JWT_SECRET)
+                    .parseClaimsJws(authToken);
             return true;
         }
         catch (SignatureException e)
@@ -84,11 +94,15 @@ public class JWTUtil implements Serializable
     }
 
     private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .setSigningKey(JWT_SECRET)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public Date getExpirationDate(String token) {
-        return getClaims(token).getExpiration();
+        return getClaims(token)
+                .getExpiration();
     }
 
     public String getToken(HttpServletRequest request)

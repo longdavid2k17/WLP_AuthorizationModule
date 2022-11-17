@@ -11,6 +11,7 @@ import pl.com.kantoch.authorizationmodule.exceptions.NoRequiredRoleException;
 import pl.com.kantoch.authorizationmodule.exceptions.NoSuchRoleException;
 import pl.com.kantoch.authorizationmodule.exceptions.NoSuchUserException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,19 @@ public class PrivilegesService {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.roleRepository = roleRepository;
+    }
+
+    public boolean hasRequiredPrivileges(HttpServletRequest httpServletRequest, ERole... roles) throws NoSuchUserException, NoSuchRoleException, NoRequiredRoleException {
+        String token = jwtUtil.getToken(httpServletRequest);
+        String username = jwtUtil.getUsernameFromJwtToken(token);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()) throw new NoSuchUserException(username);
+        for(ERole role : roles){
+            Optional<Role> optionalRole = roleRepository.findByRoleName(role);
+            if(optionalRole.isEmpty()) throw new NoSuchRoleException(role);
+            return optionalUser.get().getRoles().contains(optionalRole.get());
+        }
+        return false;
     }
 
     public boolean hasRequiredPrivileges(String token, ERole role) throws NoSuchUserException, NoSuchRoleException, NoRequiredRoleException {

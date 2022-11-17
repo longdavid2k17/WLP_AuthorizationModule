@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.com.kantoch.authorizationmodule.configuration.jwt.JWTUtil;
+import pl.com.kantoch.authorizationmodule.configuration.payload.requests.GrantRolesRequest;
 import pl.com.kantoch.authorizationmodule.configuration.payload.requests.LoginRequest;
 import pl.com.kantoch.authorizationmodule.configuration.payload.requests.SignUpRequest;
 import pl.com.kantoch.authorizationmodule.configuration.payload.response.UserResponse;
@@ -24,10 +25,12 @@ import pl.com.kantoch.authorizationmodule.exceptions.NoSuchUserException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
@@ -41,9 +44,16 @@ public class AuthorizationService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final PrivilegesService privilegesService;
+    private final MailingService mailingService;
 
-    public AuthorizationService(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserRepository userRepository,
-                                RoleRepository roleRepository, PasswordEncoder passwordEncoder, TokenService tokenService, PrivilegesService privilegesService) {
+    public AuthorizationService(AuthenticationManager authenticationManager,
+                                JWTUtil jwtUtil,
+                                UserRepository userRepository,
+                                RoleRepository roleRepository,
+                                PasswordEncoder passwordEncoder,
+                                TokenService tokenService,
+                                PrivilegesService privilegesService,
+                                MailingService mailingService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
@@ -51,6 +61,7 @@ public class AuthorizationService {
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
         this.privilegesService = privilegesService;
+        this.mailingService = mailingService;
     }
 
     public UserResponse authenticateUser(LoginRequest loginRequest) throws AuthenticationException {
@@ -136,5 +147,20 @@ public class AuthorizationService {
             targetUser.getRoles().add(optionalTargetRole.get());
             userRepository.save(targetUser);
         }
+    }
+
+    @Transactional
+    public void grantRoles(GrantRolesRequest grantRolesRequest, HttpServletRequest request) throws NoSuchRoleException, NoRequiredRoleException, NoSuchUserException, IOException, InterruptedException {
+        if(!privilegesService.hasRequiredPrivileges(request,ERole.ROLE_ADMIN)) throw new IllegalStateException("You have not authority to proceed this action!");
+        Optional<User> userOptional = userRepository.findById(grantRolesRequest.getTargetUserId());
+        if(userOptional.isEmpty()) throw new NoSuchUserException(grantRolesRequest.getTargetUserId());
+        User user = userOptional.get();
+        Set<Role> targetRoles = new HashSet<>(grantRolesRequest.getRoleCollection());
+        user.setRoles(targetRoles);
+        AtomicReference<String> rolesString = new AtomicReference<>("");
+        targetRoles.forEach(e-> rolesString.updateAndGet(v -> v + e.getRoleName()+","));
+        String message = "Administration of our system has changed your roles in system. Current roles are: "+rolesString;
+        mailingService.sendMailRequest(user.getEmail(),"Account roles granted",message);
+        userRepository.save(user);
     }
 }

@@ -23,6 +23,10 @@ public class RoleDictionaryService {
         this.roleRepository = roleRepository;
     }
 
+    public Collection<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+
     @Scheduled(fixedRate = 360000,initialDelay = 1000)
     private void setupRolesData() {
         Collection<Role> roleCollection = roleRepository.findAll();
