@@ -76,12 +76,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     {
         http.csrf().disable();
         http.headers().frameOptions().disable();
-/*        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/auth/**").permitAll()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated();*/
+
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -99,12 +94,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/swagger-ui.html",
-                "/webjars/**");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers(AUTH_WHITELIST);
     }
 }

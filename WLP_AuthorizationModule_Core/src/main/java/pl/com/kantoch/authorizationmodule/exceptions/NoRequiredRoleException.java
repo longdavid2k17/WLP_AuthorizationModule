@@ -7,7 +7,7 @@ public class NoRequiredRoleException extends Exception {
         super("User "+username+" has not required role to perform this action. Expected role: "+role.name());
     }
 
-    public NoRequiredRoleException(String username, ERole[] roles) {
+    public NoRequiredRoleException(String username, ERole... roles) {
         super("User "+username+" has not required role to perform this action. Expected at least one of the role: "+roles);
     }
 }

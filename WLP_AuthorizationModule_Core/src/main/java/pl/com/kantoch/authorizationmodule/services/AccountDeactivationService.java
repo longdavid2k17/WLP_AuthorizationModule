@@ -37,13 +37,10 @@ public class AccountDeactivationService {
 
     @Transactional
     public void deactivateUser(Long id, String userDeactivationReason, HttpServletRequest request) throws NoSuchUserException, IOException, InterruptedException, NoSuchRoleException, NoRequiredRoleException {
-        String token = jwtUtil.getToken(request);
         String username = jwtUtil.getUsernameFromJwtToken(request);
         Optional<User> optionalPerformingUser = userRepository.findByUsername(username);
         if(optionalPerformingUser.isEmpty()) throw new NoSuchUserException(username);
-        ERole[] eRole = {ERole.ROLE_ADMIN,ERole.ROLE_MODERATOR};
-        if(!privilegesService.hasRequiredPrivileges(token, ERole.ROLE_ADMIN) &&
-                !privilegesService.hasRequiredPrivileges(token, ERole.ROLE_MODERATOR)) throw new NoRequiredRoleException(username,eRole);
+        if(!privilegesService.hasRequiredPrivileges(request, ERole.ROLE_ADMIN)) throw new NoRequiredRoleException(username,ERole.ROLE_ADMIN);
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isEmpty()) throw new NoSuchUserException(id);
         User user = optionalUser.get();
